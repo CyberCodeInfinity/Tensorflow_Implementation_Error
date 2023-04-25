@@ -1,0 +1,92 @@
+#FULL CODE SNIPPET OF THE ERROR
+
+Traceback (most recent call last)
+
+NotImplementedError
+Cell In[36], line 1
+----> 1 wave = load_wav_16k_mono(CAPUCHIN_FILE)
+      2 nwave = load_wav_16k_mono(NOT_CAPUCHIN_FILE)
+      3 plt.plot(wave)
+
+Cell In[33], line 10, in load_wav_16k_mono(filename)
+      8 sample_rate = tf.cast(sample_rate, dtype=tf.int64)
+      9 # Goes from 44100Hz to 16000hz - amplitude of the audio signal
+---> 10 wav = tfio.audio.resample(wav, rate_in=sample_rate, rate_out=16000)
+     11 return wav
+
+File c:\Users\pytho\AppData\Local\Programs\Python\Python311\Lib\site-packages\tensorflow_io\python\ops\audio_ops.py:462, in resample(input, rate_in, rate_out, name)
+    457 def f(i):
+    458     return core_ops.io_audio_resample(
+    459         i, rate_in=rate_in, rate_out=rate_out, name=name
+    460     )
+--> 462 value = tf.vectorized_map(f, input)
+    464 def g1():
+    465     return tf.squeeze(value, [0, -1])
+
+File c:\Users\pytho\AppData\Local\Programs\Python\Python311\Lib\site-packages\tensorflow\python\ops\parallel_for\control_flow_ops.py:565, in vectorized_map(fn, elems, fallback_to_while_loop, warn)
+    562 else:
+    563   batch_size = max(static_first_dims)
+--> 565 return pfor(
+    566     loop_fn,
+    567     batch_size,
+    568     fallback_to_while_loop=fallback_to_while_loop,
+    569     warn=warn)
+
+File c:\Users\pytho\AppData\Local\Programs\Python\Python311\Lib\site-packages\tensorflow\python\ops\parallel_for\control_flow_ops.py:214, in pfor(loop_fn, iters, fallback_to_while_loop, parallel_iterations, warn)
+    211     def_function.run_functions_eagerly(False)
+    212   f = def_function.function(f)
+--> 214 outputs = f()
+    215 if functions_run_eagerly is not None:
+    216   def_function.run_functions_eagerly(functions_run_eagerly)
+
+File c:\Users\pytho\AppData\Local\Programs\Python\Python311\Lib\site-packages\tensorflow\python\util\traceback_utils.py:153, in filter_traceback..error_handler(*args, **kwargs)
+    151 except Exception as e:
+    152   filtered_tb = _process_traceback_frames(e.__traceback__)
+--> 153   raise e.with_traceback(filtered_tb) from None
+    154 finally:
+    155   del filtered_tb
+
+File ~\AppData\Local\Temp\__autograph_generated_filehwryv1ms.py:17, in outer_factory..inner_factory..tf__f()
+     15 try:
+     16     do_return = True
+---> 17     retval_ = ag__.converted_call(ag__.ld(_pfor_impl), (ag__.ld(loop_fn), ag__.ld(iters)), dict(fallback_to_while_loop=ag__.ld(fallback_to_while_loop), parallel_iterations=ag__.ld(parallel_iterations), warn=ag__.ld(warn)), fscope)
+     18 except:
+     19     do_return = False
+
+File c:\Users\pytho\AppData\Local\Programs\Python\Python311\Lib\site-packages\tensorflow_io\python\ops\audio_ops.py:458, in resample..f(i)
+    457 def f(i):
+--> 458     return core_ops.io_audio_resample(
+    459         i, rate_in=rate_in, rate_out=rate_out, name=name
+    460     )
+
+File c:\Users\pytho\AppData\Local\Programs\Python\Python311\Lib\site-packages\tensorflow_io\python\ops\__init__.py:88, in LazyLoader.__getattr__(self, attrb)
+     87 def __getattr__(self, attrb):
+---> 88     return getattr(self._load(), attrb)
+
+File c:\Users\pytho\AppData\Local\Programs\Python\Python311\Lib\site-packages\tensorflow_io\python\ops\__init__.py:84, in LazyLoader._load(self)
+     82 def _load(self):
+     83     if self._mod is None:
+---> 84         self._mod = _load_library(self._library)
+     85     return self._mod
+
+File c:\Users\pytho\AppData\Local\Programs\Python\Python311\Lib\site-packages\tensorflow_io\python\ops\__init__.py:69, in _load_library(filename, lib)
+     67     except (tf.errors.NotFoundError, OSError) as e:
+     68         errs.append(str(e))
+---> 69 raise NotImplementedError(
+     70     "unable to open file: "
+     71     + f"{filename}, from paths: {filenames}\ncaused by: {errs}"
+     72 )
+
+NotImplementedError: in user code:
+
+    File "c:\Users\pytho\AppData\Local\Programs\Python\Python311\Lib\site-packages\tensorflow_io\python\ops\audio_ops.py", line 458, in f
+        return core_ops.io_audio_resample(
+    File "c:\Users\pytho\AppData\Local\Programs\Python\Python311\Lib\site-packages\tensorflow_io\python\ops\__init__.py", line 88, in __getattr__
+        return getattr(self._load(), attrb)
+    File "c:\Users\pytho\AppData\Local\Programs\Python\Python311\Lib\site-packages\tensorflow_io\python\ops\__init__.py", line 84, in _load
+        self._mod = _load_library(self._library)
+    File "c:\Users\pytho\AppData\Local\Programs\Python\Python311\Lib\site-packages\tensorflow_io\python\ops\__init__.py", line 69, in _load_library
+        raise NotImplementedError(
+
+    NotImplementedError: unable to open file: libtensorflow_io.so, from paths: ['c:\\Users\\pytho\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\tensorflow_io\\python\\ops\\libtensorflow_io.so']
+    caused by: ['c:\\Users\\pytho\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\tensorflow_io\\python\\ops\\libtensorflow_io.so not found']
